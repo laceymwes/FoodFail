@@ -18,9 +18,11 @@ import com.mweslacey.city.foodfail.R;
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
     LandingFragment.OnFragmentInteractionListener,
-    LocalMapFragment.OnFragmentInteractionListener {
+    LocalMapFragment.OnFragmentInteractionListener,
+    SearchFragment.OnFragmentInteractionListener{
 
   private LandingFragment landingFragment;
+  private Fragment fragment;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +76,14 @@ public class MainActivity extends AppCompatActivity
   public boolean onNavigationItemSelected(MenuItem item) {
     // Handle navigation view item clicks here.
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    String[] itemId = getResources().getResourceName(item.getItemId()).split("\\/");
+    loadFragment(itemId[1]);
     drawer.closeDrawer(GravityCompat.START);
-    loadFragment(item.getTitle().toString());
     return true;
   }
 
-  public void loadFragment(String title) {
-    Fragment fragment;
-    switch(title) {
+  public void loadFragment(String itemId) {
+    switch(itemId) {
       case "local":
         fragment = LocalMapFragment.newInstance();
         break;
@@ -90,6 +92,6 @@ public class MainActivity extends AppCompatActivity
     }
     getSupportFragmentManager().beginTransaction()
         .addToBackStack(null)
-        .add(R.id.fragment_container, fragment);
+        .replace(R.id.fragment_container, fragment).commit();
   }
 }

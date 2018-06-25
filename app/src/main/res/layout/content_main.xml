@@ -10,5 +10,4 @@
   tools:context="com.mweslacey.city.foodfail.controller.MainActivity"
   tools:showIn="@layout/app_bar_main">
 
-
 </FrameLayout>

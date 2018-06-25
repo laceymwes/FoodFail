@@ -10,8 +10,7 @@
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="landing_header">Food Fail</string>
   <string name="landing_body">Find the inspection history of any facility that handles food!</string>
-  <string name="nav_local_facilities">Local Facilities</string>
-  <string name="search_for_facilities">Search for Facilities</string>
-  <string name="title_local">local</string>
-  <string name="title_search">search</string>
+  <string name="title_local">Local Facilities</string>
+  <string name="title_search">Search for Facilities</string>
+  <string name="search">Search</string>
 </resources>
