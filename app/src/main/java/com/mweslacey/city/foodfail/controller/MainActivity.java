@@ -3,6 +3,7 @@ package com.mweslacey.city.foodfail.controller;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +17,8 @@ import com.mweslacey.city.foodfail.R;
 
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
-    LandingFragment.OnFragmentInteractionListener{
+    LandingFragment.OnFragmentInteractionListener,
+    LocalMapFragment.OnFragmentInteractionListener {
 
   private LandingFragment landingFragment;
 
@@ -30,7 +32,6 @@ public class MainActivity extends AppCompatActivity
         .add(R.id.fragment_container, landingFragment).commit();
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-
 
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -64,24 +65,31 @@ public class MainActivity extends AppCompatActivity
     // Handle action bar item clicks here. The action bar will
     // automatically handle clicks on the Home/Up button, so long
     // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
-
     //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-      return true;
-    }
-
-    return super.onOptionsItemSelected(item);
+    return true;
   }
 
   @SuppressWarnings("StatementWithEmptyBody")
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {
     // Handle navigation view item clicks here.
-    int id = item.getItemId();
-
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     drawer.closeDrawer(GravityCompat.START);
+    loadFragment(item.getTitle().toString());
     return true;
+  }
+
+  public void loadFragment(String title) {
+    Fragment fragment;
+    switch(title) {
+      case "local":
+        fragment = LocalMapFragment.newInstance();
+        break;
+      case "search":
+        fragment = SearchFragment.newInstance();
+    }
+    getSupportFragmentManager().beginTransaction()
+        .addToBackStack(null)
+        .add(R.id.fragment_container, fragment);
   }
 }
