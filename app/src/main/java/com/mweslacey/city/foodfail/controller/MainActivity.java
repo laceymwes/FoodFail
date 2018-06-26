@@ -1,10 +1,7 @@
 package com.mweslacey.city.foodfail.controller;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -62,6 +59,8 @@ public class MainActivity extends AppCompatActivity
     return true;
   }
 
+
+
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle action bar item clicks here. The action bar will
@@ -76,18 +75,16 @@ public class MainActivity extends AppCompatActivity
   public boolean onNavigationItemSelected(MenuItem item) {
     // Handle navigation view item clicks here.
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    String[] itemId = getResources().getResourceName(item.getItemId()).split("\\/");
-    loadFragment(itemId[1]);
-    drawer.closeDrawer(GravityCompat.START);
+    loadFragment(item.getItemId());
     return true;
   }
 
-  public void loadFragment(String itemId) {
+  public void loadFragment(int itemId) {
     switch(itemId) {
-      case "local":
+      case R.id.nav_local:
         fragment = LocalMapFragment.newInstance();
         break;
-      case "search":
+      case R.id.nav_search:
         fragment = SearchFragment.newInstance();
     }
     getSupportFragmentManager().beginTransaction()
