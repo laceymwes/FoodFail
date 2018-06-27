@@ -1,4 +1,4 @@
-package com.mweslacey.city.foodfail.model;
+package com.mweslacey.city.foodfail.model.dao;
 
 import android.arch.persistence.room.Dao;
 
