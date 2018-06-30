@@ -16,13 +16,17 @@ import com.mweslacey.city.foodfail.model.dao.InspectionDAO;
 import com.mweslacey.city.foodfail.model.entity.Facility;
 import com.mweslacey.city.foodfail.model.entity.Inspection;
 import com.mweslacey.city.foodfail.pojo.Headers;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 @Database(entities = {Facility.class, Inspection.class}, version = 1, exportSchema = false)
@@ -67,29 +71,33 @@ public abstract class InspectionDatabase extends RoomDatabase {
 
     @Override
     protected Void doInBackground(Context... contexts) {
-      InspectionDatabase db = InspectionDatabase.getInstance(contexts[0]);
-      Facility facility = new Facility();
-      facility.setFacilityKey(112312);
-      db.getInspectionDAO().insertFacilities(facility);
       try {
-        FileReader reader = new FileReader(new File("assets/raw/inspection_records.csv"));
-        Iterable<CSVRecord> records = CSVFormat.RFC4180.withHeader(Headers.class).parse(reader);
-        for (CSVRecord record : records) {
-          facility.setFacilityKey(Integer.valueOf(record.get(Headers.FACILITY_KEY)));
-          facility.setFacilityName(record.get(Headers.FACILITY_NAME));
-          facility.setStreetNumber(Integer.valueOf(record.get(Headers.STREET_NUMBER)));
-          facility.setStreetName(record.get(Headers.STREET_NAME));
-          facility.setZip(Integer.valueOf(record.get(Headers.ZIP)));
-          facility.setState(record.get(Headers.STATE));
-
-          db.getInspectionDAO().insertFacilities(facility);
+        InputStream raw =
+          contexts[0].getResources().openRawResource(R.raw.inspection_records);
+          CSVParser parser= CSVParser.parse(raw, StandardCharsets.UTF_8, CSVFormat.EXCEL);
+          long counter = 0;
+          String prevKey = "";
+        for (CSVRecord record : parser) {
+          if (counter++ < 1 || prevKey.equals(record.get(1))) {
+            continue;
+          }
+          prevKey = record.get(1);
+          Facility facility = new Facility();
+          facility.setFacilityName(record.get(0));
+          facility.setFacilityKey(Integer.parseInt(record.get(1)));
+          facility.setState(record.get(4));
+          facility.setZip(Integer.valueOf(record.get(5).substring(0,5)));
+          facility.setStreetNumber(record.get(9));
+          facility.setStreetName(record.get(10));
+        InspectionDatabase db = InspectionDatabase.getInstance(contexts[0]);
+        db.getInspectionDAO().insertFacilities(facility);
         }
-
       } catch (IOException e) {
-        Log.e(TAG, "doInBackground: prepop failed ");
+        Log.e(TAG, "Database pre-pop failure ");
         e.printStackTrace();
       } finally {
         InspectionDatabase.forgetInstance(contexts[0]);
+
       }
       return null;
     }

@@ -15,14 +15,14 @@ public class Facility {
   @NonNull
   @PrimaryKey
   @ColumnInfo(index = true, name = "facility_key")
-  private Integer facilityKey;
+  private int facilityKey;
 
   // Users will search for facility by name
   @ColumnInfo(collate = NOCASE, name = "facility_name", index = true)
   private String facilityName;
 
   @ColumnInfo(name = "street_number")
-  private int streetNumber;
+  private String streetNumber;
 
   @ColumnInfo(name = "street_name")
   private String streetName;
@@ -32,11 +32,11 @@ public class Facility {
   private String state;
 
   @NonNull
-  public Integer getFacilityKey() {
+  public int getFacilityKey() {
     return facilityKey;
   }
 
-  public void setFacilityKey(@NonNull Integer facilityKey) {
+  public void setFacilityKey(@NonNull int facilityKey) {
     this.facilityKey = facilityKey;
   }
 
@@ -48,11 +48,11 @@ public class Facility {
     this.facilityName = facilityName;
   }
 
-  public int getStreetNumber() {
+  public String getStreetNumber() {
     return streetNumber;
   }
 
-  public void setStreetNumber(int streetNumber) {
+  public void setStreetNumber(String streetNumber) {
     this.streetNumber = streetNumber;
   }
 
