@@ -33,4 +33,11 @@
     <item name="android:layout_marginLeft">40dp</item>
   </style>
 
+  <!--<style name="SearchCardStyle">-->
+    <!--<item name="layout_width">90%</item>-->
+    <!--<item name="layout_height">wrap_content</item>-->
+    <!--<item name="layout_gravity">center</item>-->
+    <!--<item name="Card_View:cardCornerRadius">4dp</item>-->
+  <!--</style>-->
+
 </resources>

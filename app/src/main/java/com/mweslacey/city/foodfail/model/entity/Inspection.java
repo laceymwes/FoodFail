@@ -2,38 +2,46 @@ package com.mweslacey.city.foodfail.model.entity;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-@Entity(foreignKeys = @ForeignKey(            entity = Facility.class,
-/* if a facility is removed all inspection*/  parentColumns = "facilityID",
-/* inspection records for that facility   */  childColumns = "facilityID",
+@Entity(tableName = "inspections",   foreignKeys = @ForeignKey(entity = Facility.class,
+/* if a facility is removed all inspection*/  parentColumns = "facility_key",
+/* inspection records for that facility   */  childColumns = "facility_id",
 /* should be removed.                     */  onDelete = CASCADE))
 
 public class Inspection {
 
-@NonNull
-@PrimaryKey(autoGenerate = true)
-private long inspectionID;
+  @NonNull
+  @PrimaryKey(autoGenerate = true)
+  private long inspectionID;
 
-private int facilityID;
+  @ColumnInfo(index = true, name = "facility_id") // allows db to locate records much faster
+  private int facilityID;
 
-private long inspectionDate;
+  @ColumnInfo(name = "inspection_date")
+  private long inspectionDate;
 
-private String inspectionType;
+  @ColumnInfo(name = "inspection_type")
+  private String inspectionType;
 
-private int actionCode;
+  @ColumnInfo(name = "result_code")
+  private int resultCode;
 
-private int resultCode;
+  @ColumnInfo(name = "result_desc")
+  private String resultDesc;
 
-private String violationCode;
+  @ColumnInfo(name = "violation_code")
+  private String violationCode;
 
-private String violationDesc;
+  @ColumnInfo(name = "violation_desc")
+  private String violationDesc;
 
-private String inspectionMemo;
-
+  @ColumnInfo(name = "inspection_memo")
+  private String inspectionMemo;
 
   @NonNull
   public long getInspectionID() {
@@ -66,14 +74,6 @@ private String inspectionMemo;
 
   public void setInspectionType(String inspectionType) {
     this.inspectionType = inspectionType;
-  }
-
-  public int getActionCode() {
-    return actionCode;
-  }
-
-  public void setActionCode(int actionCode) {
-    this.actionCode = actionCode;
   }
 
   public int getResultCode() {
@@ -109,4 +109,11 @@ private String inspectionMemo;
   }
 
 
+  public String getResultDesc() {
+    return resultDesc;
+  }
+
+  public void setResultDesc(String resultDesc) {
+    this.resultDesc = resultDesc;
+  }
 }

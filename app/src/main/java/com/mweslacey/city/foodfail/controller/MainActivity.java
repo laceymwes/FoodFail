@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.mweslacey.city.foodfail.R;
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity
     LocalMapFragment.OnFragmentInteractionListener,
     SearchFragment.OnFragmentInteractionListener{
 
+  public static final String SEARCH_FRAGMENT_TITLE = "Search";
+  public static final String LOCAL_FRAGMENT_TITLE = "Local Facilities";
   private LandingFragment landingFragment;
   private Fragment fragment;
 
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity
     // Handle navigation view item clicks here.
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
     loadFragment(item.getItemId());
+    drawer.closeDrawer(Gravity.START);
     return true;
   }
 
@@ -90,5 +94,15 @@ public class MainActivity extends AppCompatActivity
     getSupportFragmentManager().beginTransaction()
         .addToBackStack(null)
         .replace(R.id.fragment_container, fragment).commit();
+  }
+
+  @Override
+  public void searchTitle() {
+    getSupportActionBar().setTitle(SEARCH_FRAGMENT_TITLE);
+  }
+
+  @Override
+  public void localTitle() {
+    getSupportActionBar().setTitle(LOCAL_FRAGMENT_TITLE);
   }
 }

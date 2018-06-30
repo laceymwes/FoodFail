@@ -3,6 +3,7 @@
   package="com.mweslacey.city.foodfail">
 
   <application
+    android:name=".FoodFailApplication"
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"

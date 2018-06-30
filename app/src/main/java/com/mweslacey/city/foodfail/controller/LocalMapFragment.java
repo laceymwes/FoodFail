@@ -32,6 +32,7 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
+    mListener.localTitle();
     super.onCreate(savedInstanceState);
   }
 
@@ -65,6 +66,6 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
   }
 
   public interface OnFragmentInteractionListener {
-
+    public void localTitle();
   }
 }

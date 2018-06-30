@@ -3,27 +3,33 @@ package com.mweslacey.city.foodfail.model.entity;
 import static android.arch.persistence.room.ColumnInfo.NOCASE;
 
 import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.ColumnInfo.Collate;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 
+@Entity(tableName = "facilities")
 public class Facility {
 
-@NonNull
-@PrimaryKey
-private Integer facilityKey;
+  @NonNull
+  @PrimaryKey
+  @ColumnInfo(index = true, name = "facility_key")
+  private Integer facilityKey;
 
-@ColumnInfo (collate = NOCASE) // users will be able to search by facility name
-private String facilityName;
+  // Users will search for facility by name
+  @ColumnInfo(collate = NOCASE, name = "facility_name", index = true)
+  private String facilityName;
 
-private int streetNumber;
+  @ColumnInfo(name = "street_number")
+  private int streetNumber;
 
-private String streetName;
+  @ColumnInfo(name = "street_name")
+  private String streetName;
 
-private int zip;
+  private int zip;
 
-private String state;
+  private String state;
 
   @NonNull
   public Integer getFacilityKey() {
