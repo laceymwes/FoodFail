@@ -8,11 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import com.mweslacey.city.foodfail.R;
 import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
@@ -26,8 +26,7 @@ public class SearchFragment extends Fragment {
   private InspectionDatabase inspectDB;
   private RecyclerView recyclerView;
   private FacilityAdapter facilityAdapter;
-  private SearchView searchView;
-  private String search;
+  private EditText facilitySearch;
 
   public SearchFragment() {
     // Required empty public constructor
@@ -56,14 +55,14 @@ public class SearchFragment extends Fragment {
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    searchView = view.findViewById(R.id.facility_search);
-
-    searchView.setOnSearchClickListener(new OnClickListener() {
+    facilitySearch = view.findViewById(R.id.facility_search);
+    facilitySearch.setOnClickListener(new OnClickListener() {
       @Override
       public void onClick(View v) {
-        new SearchAsync().execute(searchView.getQuery().toString());
+        new SearchAsync().execute(facilitySearch.getText().toString());
       }
     });
+
   }
 
   @Override

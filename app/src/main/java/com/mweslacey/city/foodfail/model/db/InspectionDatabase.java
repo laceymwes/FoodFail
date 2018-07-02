@@ -11,20 +11,13 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import com.mweslacey.city.foodfail.R;
-import com.mweslacey.city.foodfail.controller.MainActivity;
 import com.mweslacey.city.foodfail.model.dao.InspectionDAO;
 import com.mweslacey.city.foodfail.model.entity.Facility;
 import com.mweslacey.city.foodfail.model.entity.Inspection;
-import com.mweslacey.city.foodfail.pojo.Headers;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -68,29 +61,45 @@ public abstract class InspectionDatabase extends RoomDatabase {
 
   private static class PrepopulateTask extends AsyncTask<Context, Void, Void> {
 
+    // COLUMN INDICES
+    public static final int FACILITY_KEY = 1;
+    public static final int INSPECTION_DATE = 16;
+    public static final int RESULT_CODE = 22;
+    public static final int RESULT_DESC = 23;
+    public static final int VIOLATION_CODE = 24;
+    public static final int VIOLATION_DESC = 25;
+    public static final int INSPECTION_MEMO = 26;
+    public static final int FACILITY_NAME = 0;
+    public static final int STATE = 4;
+    public static final int ZIP = 5;
+    public static final int STREET_NUM = 9;
+    public static final int STREET_NAME = 10;
 
     @Override
     protected Void doInBackground(Context... contexts) {
       try {
-        InputStream raw =
-          contexts[0].getResources().openRawResource(R.raw.inspection_records);
-          CSVParser parser= CSVParser.parse(raw, StandardCharsets.UTF_8, CSVFormat.EXCEL);
-          long counter = 0;
-          String prevKey = "";
+        InputStreamReader raw = new InputStreamReader(
+            contexts[0].getResources().openRawResource(R.raw.inspection_records));
+        CSVParser parser = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(raw);
+        Facility facility = new Facility();
+        Inspection inspection = new Inspection();
         for (CSVRecord record : parser) {
-          if (counter++ < 1 || prevKey.equals(record.get(1))) {
-            continue;
-          }
-          prevKey = record.get(1);
-          Facility facility = new Facility();
-          facility.setFacilityName(record.get(0));
-          facility.setFacilityKey(Integer.parseInt(record.get(1)));
-          facility.setState(record.get(4));
-          facility.setZip(Integer.valueOf(record.get(5).substring(0,5)));
-          facility.setStreetNumber(record.get(9));
-          facility.setStreetName(record.get(10));
-        InspectionDatabase db = InspectionDatabase.getInstance(contexts[0]);
-        db.getInspectionDAO().insertFacilities(facility);
+          inspection.setFacilityID(Integer.parseInt(record.get(FACILITY_KEY)));
+          inspection.setInspectionDate(record.get(INSPECTION_DATE));
+          inspection.setResultCode(Integer.parseInt(record.get(RESULT_CODE)));
+          inspection.setResultDesc(record.get(RESULT_DESC));
+          inspection.setViolationCode(record.get(VIOLATION_CODE));
+          inspection.setViolationDesc(record.get(VIOLATION_DESC));
+          inspection.setInspectionMemo(record.get(INSPECTION_MEMO));
+          facility.setFacilityName(record.get(FACILITY_NAME));
+          facility.setFacilityKey(Integer.parseInt(record.get(FACILITY_KEY)));
+          facility.setState(record.get(STATE));
+          facility.setZip(Integer.valueOf(record.get(ZIP).substring(0, 5)));
+          facility.setStreetNumber(record.get(STREET_NUM));
+          facility.setStreetName(record.get(STREET_NAME));
+          InspectionDatabase db = InspectionDatabase.getInstance(contexts[0]);
+          db.getInspectionDAO().insertFacilities(facility);
+          db.getInspectionDAO().insertInspections(inspection);
         }
       } catch (IOException e) {
         Log.e(TAG, "Database pre-pop failure ");

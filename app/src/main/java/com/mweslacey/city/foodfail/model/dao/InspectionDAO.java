@@ -6,12 +6,13 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import com.mweslacey.city.foodfail.model.entity.Facility;
 import com.mweslacey.city.foodfail.model.entity.Inspection;
+import com.mweslacey.city.foodfail.pojo.FacilityAndLastInspection;
 import java.util.List;
 
 @Dao
 public interface InspectionDAO {
 
-  @Insert(onConflict = OnConflictStrategy.FAIL)
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
   public void insertFacilities(Facility... facilities);
 
   @Insert(onConflict = OnConflictStrategy.FAIL)
@@ -24,5 +25,9 @@ public interface InspectionDAO {
   // Called when user selects facility from search results
   @Query("SELECT * FROM inspections WHERE facility_id = :facility_key")
   public List<Inspection> getInspections(int facility_key);
+
+//  // TODO: Create  to pull only on, most recent, inspection record with facility
+//  @Query(Queries.RECENT_INSPECTION)
+//  public List<FacilityAndLastInspection> getFacilityListItem(String search);
 
 }

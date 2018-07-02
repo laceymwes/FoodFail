@@ -6,6 +6,7 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.ColorLong;
 import android.support.annotation.NonNull;
 
 @Entity(tableName = "inspections",   foreignKeys = @ForeignKey(entity = Facility.class,
@@ -17,16 +18,14 @@ public class Inspection {
 
   @NonNull
   @PrimaryKey(autoGenerate = true)
+  @ColumnInfo(name = "inspection_id")
   private long inspectionID;
 
   @ColumnInfo(index = true, name = "facility_id") // allows db to locate records much faster
   private int facilityID;
 
   @ColumnInfo(name = "inspection_date")
-  private long inspectionDate;
-
-  @ColumnInfo(name = "inspection_type")
-  private String inspectionType;
+  private String inspectionDate;
 
   @ColumnInfo(name = "result_code")
   private int resultCode;
@@ -60,20 +59,12 @@ public class Inspection {
     this.facilityID = facilityID;
   }
 
-  public long getInspectionDate() {
+  public String getInspectionDate() {
     return inspectionDate;
   }
 
-  public void setInspectionDate(long inspectionDate) {
+  public void setInspectionDate(String inspectionDate) {
     this.inspectionDate = inspectionDate;
-  }
-
-  public String getInspectionType() {
-    return inspectionType;
-  }
-
-  public void setInspectionType(String inspectionType) {
-    this.inspectionType = inspectionType;
   }
 
   public int getResultCode() {
