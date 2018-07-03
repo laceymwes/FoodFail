@@ -1,6 +1,7 @@
 package com.mweslacey.city.foodfail.controller;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.mweslacey.city.foodfail.R;
 import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
 import com.mweslacey.city.foodfail.model.entity.Facility;
+import com.mweslacey.city.foodfail.model.pojo.FacilityAndLastInspection;
 import java.util.List;
 
 public class SearchFragment extends Fragment {
@@ -86,16 +88,16 @@ public class SearchFragment extends Fragment {
     public void searchTitle();
   }
 
-  private class SearchAsync extends AsyncTask<String, Void, List<Facility>> {
+  private class SearchAsync extends AsyncTask<String, Void, List<FacilityAndLastInspection>> {
 
     @Override
-    protected List<Facility> doInBackground(String... searches) {
+    protected List<FacilityAndLastInspection> doInBackground(String... searches) {
       return InspectionDatabase.getInstance(SearchFragment.this.getContext())
       .getInspectionDAO().getMatches(searches[0]);
     }
 
     @Override
-    protected void onPostExecute(List<Facility> facilities) {
+    protected void onPostExecute(List<FacilityAndLastInspection> facilities) {
       recyclerView = getActivity().findViewById(R.id.search_recycler_view);
       recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
       recyclerView.setAdapter(new FacilityAdapter(facilities));
@@ -105,23 +107,33 @@ public class SearchFragment extends Fragment {
   private class FacilityHolder extends RecyclerView.ViewHolder {
 
     private TextView facilityName;
+    private TextView facilityAddress;
+    private TextView lastInspection;
+    private final static String FAILURE = "NOT IN COMPLIANCE";
 
     public FacilityHolder(LayoutInflater inflater, ViewGroup parent) {
       super(inflater.inflate(R.layout.facility_search_item, parent, false));
-      facilityName = itemView.findViewById(R.id.search_card_text);
+      facilityName = itemView.findViewById(R.id.search_facility_name);
+      facilityAddress = itemView.findViewById(R.id.search_facility_address);
+      lastInspection = itemView.findViewById(R.id.search_facility_inspection);
     }
 
-    public void setFacilityName(String name) {
+    public void setItemViewProperties(String name, String address, String inspection) {
       facilityName.setText(name);
+      facilityAddress.setText(address);
+      lastInspection.setText(inspection);
+      if (inspection.contains(FAILURE)) {
+        lastInspection.setTextColor(Color.RED);
+      }
     }
   }
 
   private class FacilityAdapter extends RecyclerView.Adapter {
 
-    private List<Facility> facilities;
+    private List<FacilityAndLastInspection> facilities;
 
 
-    public FacilityAdapter(List<Facility> facilities){
+    public FacilityAdapter(List<FacilityAndLastInspection> facilities){
       this.facilities = facilities;
     }
 
@@ -134,7 +146,10 @@ public class SearchFragment extends Fragment {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
       FacilityHolder fHolder = (FacilityHolder) holder; // super class has no knowledge of subclass methods
-      fHolder.setFacilityName(facilities.get(position).getFacilityName());
+      FacilityAndLastInspection facility = facilities.get(position);
+      fHolder.setItemViewProperties(facility.getName(),
+          facility.getAddress(),
+          facility.getLastInspection());
     }
 
     @Override

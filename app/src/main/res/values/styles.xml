@@ -33,11 +33,32 @@
     <item name="android:layout_marginLeft">40dp</item>
   </style>
 
-  <!--<style name="SearchCardStyle">-->
-    <!--<item name="layout_width">90%</item>-->
-    <!--<item name="layout_height">wrap_content</item>-->
-    <!--<item name="layout_gravity">center</item>-->
-    <!--<item name="Card_View:cardCornerRadius">4dp</item>-->
-  <!--</style>-->
+  <style name="CardStyle">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginRight">8dp</item>
+    <item name="android:layout_marginLeft">8dp</item>
+    <item name="android:layout_marginBottom">8dp</item>
+  </style>
+
+  <style name="SearchCardHeaderStyle">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">18sp</item>
+    <item name="android:textColor">#000000</item>
+    <item name="android:paddingLeft">8dp</item>
+    <item name="android:paddingTop">8dp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:capitalize">words</item>
+  </style>
+
+    <style name="SearchCardBodyStyle">
+      <item name="android:layout_width">wrap_content</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:paddingLeft">8dp</item>
+      <item name="android:paddingBottom">4dp</item>
+    </style>
+
+
 
 </resources>

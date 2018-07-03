@@ -8,11 +8,11 @@ public class Queries {
       + "ON ir.facility_id = f.facility_key "
       + "WHERE f.facility_name LIKE '%' || :search || '%' "
       + "GROUP BY f.facility_key "
-      + "ORDER BY facility_name ASC, inspection_date ASC;";
+      + "ORDER BY facility_name ASC, inspection_date ASC";
 
-  public static final String ALL_INSPECTIONS = "SELECT f.*, ir.* FROM facilities as f  "
-      + "LEFT JOIN inspections AS ir  "
-      + "ON ir.facility_id = f.facility_key"
-      + "WHERE f.facility_key = :key "
-      + "ORDER BY ir.inspection_date ASC; ";
+  public static final String ALL_INSPECTIONS = "SELECT f.*, ir.* FROM facilities AS f "
+      + "LEFT JOIN inspections AS ir "
+      + "ON ir.facility_id = f.facility_key "
+      + "WHERE f.facility_key = :facility_key "
+      + "ORDER BY ir.inspection_date ASC ";
 }

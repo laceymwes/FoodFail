@@ -6,7 +6,8 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import com.mweslacey.city.foodfail.model.entity.Facility;
 import com.mweslacey.city.foodfail.model.entity.Inspection;
-import com.mweslacey.city.foodfail.pojo.FacilityAndLastInspection;
+import com.mweslacey.city.foodfail.model.pojo.FacilityAndAllInspections;
+import com.mweslacey.city.foodfail.model.pojo.FacilityAndLastInspection;
 import java.util.List;
 
 @Dao
@@ -19,15 +20,11 @@ public interface InspectionDAO {
   public void insertInspections(Inspection... inspections);
 
   // Called when user searches for facilities from SearchFragment
-  @Query("SELECT * FROM facilities WHERE facility_name like '%' || :search || '%'")
-  public List<Facility> getMatches(String search);
+  @Query(Queries.LATEST_INSPECTION)
+  public List<FacilityAndLastInspection> getMatches(String search);
 
   // Called when user selects facility from search results
-  @Query("SELECT * FROM inspections WHERE facility_id = :facility_key")
-  public List<Inspection> getInspections(int facility_key);
-
-//  // TODO: Create  to pull only on, most recent, inspection record with facility
-//  @Query(Queries.RECENT_INSPECTION)
-//  public List<FacilityAndLastInspection> getFacilityListItem(String search);
+  @Query(Queries.ALL_INSPECTIONS)
+  public List<FacilityAndAllInspections> getInspections(int facility_key);
 
 }

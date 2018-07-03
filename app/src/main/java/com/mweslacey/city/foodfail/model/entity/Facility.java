@@ -12,6 +12,10 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "facilities")
 public class Facility {
 
+  public Facility() {
+
+  }
+
   @NonNull
   @PrimaryKey
   @ColumnInfo(index = true, name = "facility_key")

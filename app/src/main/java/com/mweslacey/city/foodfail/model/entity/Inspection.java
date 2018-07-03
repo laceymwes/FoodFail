@@ -16,6 +16,10 @@ import android.support.annotation.NonNull;
 
 public class Inspection {
 
+  public Inspection() {
+
+  }
+
   @NonNull
   @PrimaryKey(autoGenerate = true)
   @ColumnInfo(name = "inspection_id")
@@ -98,7 +102,6 @@ public class Inspection {
   public void setInspectionMemo(String inspectionMemo) {
     this.inspectionMemo = inspectionMemo;
   }
-
 
   public String getResultDesc() {
     return resultDesc;
