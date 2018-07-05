@@ -1,7 +1,6 @@
 package com.mweslacey.city.foodfail.controller;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.mweslacey.city.foodfail.R;
 import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
@@ -109,22 +109,40 @@ public class SearchFragment extends Fragment {
     private TextView facilityName;
     private TextView facilityAddress;
     private TextView lastInspection;
+    private ImageView complianceFlag;
+    private int facilityKey;
+
     private final static String FAILURE = "NOT IN COMPLIANCE";
+
 
     public FacilityHolder(LayoutInflater inflater, ViewGroup parent) {
       super(inflater.inflate(R.layout.facility_search_item, parent, false));
       facilityName = itemView.findViewById(R.id.search_facility_name);
       facilityAddress = itemView.findViewById(R.id.search_facility_address);
       lastInspection = itemView.findViewById(R.id.search_facility_inspection);
+      complianceFlag = itemView.findViewById(R.id.compliance_flag);
     }
 
-    public void setItemViewProperties(String name, String address, String inspection) {
+    public void setItemViewProperties(String name, String address, String inspection,
+        final int facilityKey) {
       facilityName.setText(name);
       facilityAddress.setText(address);
       lastInspection.setText(inspection);
+      itemView.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          callDetailView(facilityKey);
+        }
+      });
       if (inspection.contains(FAILURE)) {
-        lastInspection.setTextColor(Color.RED);
+        complianceFlag.setImageDrawable(getContext().getDrawable(R.drawable.ic_clear_red_24dp));
       }
+    }
+
+    public void callDetailView(int facilityKey) {
+      FacilityDetailFragment fragment = FacilityDetailFragment.newInstance(facilityKey);
+      getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
+          .replace(R.id.fragment_container, fragment).commit();
     }
   }
 
@@ -148,8 +166,8 @@ public class SearchFragment extends Fragment {
       FacilityHolder fHolder = (FacilityHolder) holder; // super class has no knowledge of subclass methods
       FacilityAndLastInspection facility = facilities.get(position);
       fHolder.setItemViewProperties(facility.getName(),
-          facility.getAddress(),
-          facility.getLastInspection());
+          facility.getAddress(), facility.getLastInspection(),
+          facility.getFacility().getFacilityKey());
     }
 
     @Override
