@@ -13,5 +13,7 @@
   <string name="title_local">Local Facilities</string>
   <string name="title_search">Search for Facilities</string>
   <string name="search">Search</string>
+  <string name="food_fail_menu">Food Fail Menu</string>
+  <string name="food_fail_email">foodfail.abq@mweslacey.com</string>
 
 </resources>
