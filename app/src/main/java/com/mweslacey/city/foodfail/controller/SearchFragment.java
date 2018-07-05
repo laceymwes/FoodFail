@@ -29,6 +29,7 @@ public class SearchFragment extends Fragment {
   private RecyclerView recyclerView;
   private FacilityAdapter facilityAdapter;
   private EditText facilitySearch;
+  private ImageView searchIcon;
 
   public SearchFragment() {
     // Required empty public constructor
@@ -58,13 +59,13 @@ public class SearchFragment extends Fragment {
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     facilitySearch = view.findViewById(R.id.facility_search);
-    facilitySearch.setOnClickListener(new OnClickListener() {
+    searchIcon = view.findViewById(R.id.search_icon);
+    searchIcon.setOnClickListener(new View.OnClickListener(){
       @Override
       public void onClick(View v) {
         new SearchAsync().execute(facilitySearch.getText().toString());
       }
     });
-
   }
 
   @Override

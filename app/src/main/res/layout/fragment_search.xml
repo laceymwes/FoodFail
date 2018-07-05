@@ -7,16 +7,26 @@
 
   <EditText
     android:id="@+id/facility_search"
-    android:layout_width="match_parent"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:inputType="text"
     android:queryHint="Facility Name"
     android:elevation="24dp"
     android:layout_marginBottom="8dp"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintRight_toLeftOf="@+id/search_icon"
     app:layout_constraintLeft_toLeftOf="parent"
     />
+
+  <ImageView
+    android:id="@+id/search_icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:src="@drawable/ic_search_black_24dp"
+    app:layout_constraintLeft_toRightOf="@id/facility_search"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="@id/facility_search"/>
 
   <android.support.v7.widget.RecyclerView
     android:id="@+id/search_recycler_view"
