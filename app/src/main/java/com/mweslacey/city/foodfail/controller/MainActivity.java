@@ -17,7 +17,8 @@ public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
     LandingFragment.OnFragmentInteractionListener,
     LocalMapFragment.OnFragmentInteractionListener,
-    SearchFragment.OnFragmentInteractionListener{
+    SearchFragment.OnFragmentInteractionListener,
+    FacilityDetailFragment.OnFragmentInteractionListener{
 
   public static final String SEARCH_FRAGMENT_TITLE = "Search";
   public static final String LOCAL_FRAGMENT_TITLE = "Local Facilities";

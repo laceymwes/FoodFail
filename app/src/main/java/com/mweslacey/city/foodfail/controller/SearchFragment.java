@@ -10,24 +10,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.mweslacey.city.foodfail.R;
 import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
-import com.mweslacey.city.foodfail.model.entity.Facility;
 import com.mweslacey.city.foodfail.model.pojo.FacilityAndLastInspection;
 import java.util.List;
 
 public class SearchFragment extends Fragment {
 
   private OnFragmentInteractionListener mListener;
-  private List<Facility> facilities;
-  private InspectionDatabase inspectDB;
   private RecyclerView recyclerView;
-  private FacilityAdapter facilityAdapter;
   private EditText facilitySearch;
   private ImageView searchIcon;
 
@@ -51,7 +46,6 @@ public class SearchFragment extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    inspectDB = InspectionDatabase.getInstance(getContext());
     return inflater.inflate(R.layout.fragment_search, container, false);
   }
 
@@ -115,13 +109,12 @@ public class SearchFragment extends Fragment {
 
     private final static String FAILURE = "NOT IN COMPLIANCE";
 
-
     public FacilityHolder(LayoutInflater inflater, ViewGroup parent) {
       super(inflater.inflate(R.layout.facility_search_item, parent, false));
       facilityName = itemView.findViewById(R.id.search_facility_name);
       facilityAddress = itemView.findViewById(R.id.search_facility_address);
       lastInspection = itemView.findViewById(R.id.search_facility_inspection);
-      complianceFlag = itemView.findViewById(R.id.compliance_flag);
+      complianceFlag = itemView.findViewById(R.id.search_compliance_flag);
     }
 
     public void setItemViewProperties(String name, String address, String inspection,

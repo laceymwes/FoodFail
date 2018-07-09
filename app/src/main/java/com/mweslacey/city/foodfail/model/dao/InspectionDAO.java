@@ -25,6 +25,6 @@ public interface InspectionDAO {
 
   // Called when user selects facility from search results
   @Query(Queries.ALL_INSPECTIONS)
-  public List<FacilityAndAllInspections> getInspections(int facility_key);
+  public FacilityAndAllInspections getInspections(int facility_key);
 
 }
