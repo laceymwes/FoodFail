@@ -15,9 +15,10 @@
   <string name="search">Search</string>
   <string name="food_fail_menu">Food Fail Menu</string>
   <string name="food_fail_email">foodfail.abq@mweslacey.com</string>
-  <string name="inspection_date_label">Inspection Date:</string>
-  <string name="result_label">RESULT:</string>
-  <string name="violation_description_label">Violation Description:</string>
-  <string name="inspection_memorandum_label">Inspection Memorandum:</string>
+  <string name="inspection_date_label">Inspection Date</string>
+  <string name="result_label">Result</string>
+  <string name="violation_description_label">Violation Description</string>
+  <string name="inspection_memorandum_label">Inspection Memorandum</string>
+  <string name="violation_code_label">Violation Code</string>
 
 </resources>

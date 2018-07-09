@@ -1,98 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
 
   <android.support.v7.widget.CardView
-    style="@style/CardStyle"
+    style="@style/InspectionCardStyle"
     app:cardCornerRadius="8dp">
 
     <android.support.constraint.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="match_parent"
+      android:padding="4dp">
 
       <TextView
         android:id="@+id/inspection_date_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/InspectionCardHeaderStyle"
         android:text="@string/inspection_date_label"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/detail_compliance_flag"
+        app:layout_constraintBottom_toTopOf="@+id/inspection_date"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/inspection_date"
+        app:layout_constraintRight_toRightOf="parent"
         tools:text="Inspection Date:"
         />
 
       <TextView
         android:id="@+id/inspection_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/InspectionCardBodyStyle"
         android:text="@string/inspection_date_label"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/detail_compliance_flag"
-        app:layout_constraintLeft_toRightOf="@+id/inspection_date_label"
+        app:layout_constraintTop_toBottomOf = "@+id/inspection_date_label"
+        app:layout_constraintBottom_toTopOf="@+id/result_desc_label"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:text="00/00/0000"
         />
+
+      <TextView
+        android:id="@+id/result_desc_label"
+        style="@style/InspectionCardHeaderStyle"
+        android:text="@string/result_label"
+        app:layout_constraintTop_toBottomOf="@+id/inspection_date"
+        app:layout_constraintBottom_toTopOf="@+id/result_desc"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="RESULT: "/>
+
+      <!-- Compliance -->
+      <TextView
+        android:id="@+id/result_desc"
+        style="@style/InspectionCardBodyStyle"
+        app:layout_constraintTop_toBottomOf="@+id/result_desc_label"
+        app:layout_constraintBottom_toTopOf="@+id/detail_compliance_flag"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:text="IN COMPLIANCE "/>
 
       <!-- Set drawable to check mark if "In Compliance"" -->
       <ImageView
         android:id="@+id/detail_compliance_flag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/inspection_date_label"
-        app:layout_constraintBottom_toTopOf="@+id/result_desc_label"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintTop_toBottomOf="@+id/result_desc"
+        app:layout_constraintBottom_toTopOf="@+id/violation_code_label"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
       <TextView
-      android:id="@+id/result_desc_label"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/result_label"
-      app:layout_constraintTop_toBottomOf="@+id/detail_compliance_flag"
-      app:layout_constraintBottom_toTopOf="@+id/violation_code_label"
-      app:layout_constraintLeft_toLeftOf="parent"
-      app:layout_constraintRight_toLeftOf="@+id/result_desc"
-      tools:text="RESULT: "/>
-
-      <!-- Compliance -->
-      <TextView
-        android:id="@+id/result_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/detail_compliance_flag"
-        app:layout_constraintBottom_toTopOf="@+id/violation_code_label"
-        app:layout_constraintLeft_toLeftOf="@+id/result_desc_label"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="IN COMPLIANCE "/>
-
-      <TextView
         android:id="@+id/violation_code_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/result_desc_label"
+        style="@style/InspectionCardHeaderStyle"
+        android:text="@string/violation_code_label"
+        app:layout_constraintTop_toBottomOf="@+id/result_desc"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/violation_code"
-        app:layout_constraintBottom_toTopOf="@+id/violation_desc_label"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/violation_code"
         tools:text="Violation Code:"/>
 
       <TextView
         android:id="@+id/violation_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/result_desc"
+        style="@style/InspectionCardBodyStyle"
+        app:layout_constraintTop_toBottomOf="@+id/violation_code_label"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/violation_code_label"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/violation_desc_label"
         tools:text="334 SS"/>
 
       <TextView
         android:id="@+id/violation_desc_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/InspectionCardHeaderStyle"
         android:text="@string/violation_description_label"
         app:layout_constraintTop_toBottomOf="@+id/violation_code"
         app:layout_constraintBottom_toTopOf="@+id/violation_desc"
@@ -102,8 +99,7 @@
 
       <TextView
         android:id="@+id/violation_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/InspectionCardBodyStyle"
         app:layout_constraintTop_toBottomOf="@+id/violation_desc_label"
         app:layout_constraintBottom_toTopOf="@+id/inspection_memo_label"
         app:layout_constraintRight_toRightOf="parent"
@@ -112,8 +108,7 @@
         />
       <TextView
         android:id="@+id/inspection_memo_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/InspectionCardHeaderStyle"
         android:text="@string/inspection_memorandum_label"
         app:layout_constraintBottom_toTopOf="@+id/inspection_memo"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -123,8 +118,7 @@
 
       <TextView
         android:id="@+id/inspection_memo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/InspectionCardBodyStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

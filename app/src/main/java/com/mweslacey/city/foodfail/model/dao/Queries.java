@@ -15,4 +15,7 @@ public class Queries {
       + "ON ir.facility_id = f.facility_key "
       + "WHERE f.facility_key = :facility_key "
       + "ORDER BY ir.inspection_date ASC ";
+
+  public static final String SINGLE_INSPECTION = "SELECT * FROM inspections "
+      + "WHERE inspection_id = :inspectionID";
 }

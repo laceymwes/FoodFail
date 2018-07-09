@@ -27,4 +27,7 @@ public interface InspectionDAO {
   @Query(Queries.ALL_INSPECTIONS)
   public FacilityAndAllInspections getInspections(int facility_key);
 
+  @Query(Queries.SINGLE_INSPECTION)
+  public Inspection getInspection(int inspectionID);
+
 }

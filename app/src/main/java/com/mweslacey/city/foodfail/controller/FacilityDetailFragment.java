@@ -1,30 +1,21 @@
 package com.mweslacey.city.foodfail.controller;
 
-import static android.support.constraint.Constraints.TAG;
-
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.text.Layout;
-import android.util.Log;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.TextView;
 import com.mweslacey.city.foodfail.R;
 import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
 import com.mweslacey.city.foodfail.model.entity.Facility;
 import com.mweslacey.city.foodfail.model.entity.Inspection;
 import com.mweslacey.city.foodfail.model.pojo.FacilityAndAllInspections;
 import java.util.List;
-import org.w3c.dom.Text;
 
 public class FacilityDetailFragment extends Fragment {
 
@@ -32,8 +23,9 @@ public class FacilityDetailFragment extends Fragment {
       "com.mweslacey.city.foodfail.model.facilitydetailfragment.FacilityKey";
 
   private int facilityKey;
-  private RecyclerView recyclerView;
   private Facility facility;
+  private List<Inspection> inspections;
+  private ViewPager viewPager;
 
   private OnFragmentInteractionListener mListener;
 
@@ -67,6 +59,7 @@ public class FacilityDetailFragment extends Fragment {
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    viewPager = view.findViewById(R.id.detail_view_pager);
     new AsyncQuery().execute(facilityKey);
   }
 
@@ -87,6 +80,23 @@ public class FacilityDetailFragment extends Fragment {
     mListener = null;
   }
 
+  private void setPagerAdapter() {
+    viewPager.setAdapter(new FragmentStatePagerAdapter(getActivity().getSupportFragmentManager()) {
+      @Override
+      public Fragment getItem(int position) {
+        Inspection inspection = inspections.get(position);
+        return InspectionFragment.newInstance(inspection.getInspectionDate(),
+              inspection.getResultDesc(), inspection.getViolationCode(),
+              inspection.getViolationDesc(), inspection.getInspectionMemo());
+      }
+
+      @Override
+      public int getCount() {
+        return inspections.size();
+      }
+    });
+  }
+
 
   public interface OnFragmentInteractionListener {
 
@@ -96,79 +106,19 @@ public class FacilityDetailFragment extends Fragment {
 
     @Override
     protected FacilityAndAllInspections doInBackground(Integer... keys) {
-      return InspectionDatabase.getInstance(FacilityDetailFragment.this.getContext()).getInspectionDAO()
+      return InspectionDatabase.getInstance(FacilityDetailFragment.this.getContext())
+          .getInspectionDAO()
           .getInspections(keys[0]);
     }
 
     @Override
     protected void onPostExecute(FacilityAndAllInspections facilityInspections) {
       InspectionDatabase.forgetInstance(getActivity());
-      facility = facilityInspections.getFacility();
-      Log.e(TAG, "Inspection Facility_ID : " + facilityInspections.getInspections().get(1).getFacilityID());
-      recyclerView = getActivity().findViewById(R.id.inspection_recycler_view);
-      recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-      recyclerView.setAdapter(new InspectionsAdapter(facilityInspections.getInspections()));
-    }
-  }
-/*
-  TODO: Replace with ViewPager. ViewPager shows only one item on the screen at a time.
-  Efficiency comparable to RecyclerView
-
- */
-  private class InspectionHolder extends RecyclerView.ViewHolder {
-
-    private TextView inspectionDate;
-    private TextView resultDesc;
-    private TextView violationCode;
-    private TextView violationDesc;
-    private TextView inspectionMemo;
-
-    public InspectionHolder(LayoutInflater inflater, ViewGroup parent) {
-      super(inflater.inflate(R.layout.inspection_item, parent, false));
-      inspectionDate = itemView.findViewById(R.id.inspection_date);
-      resultDesc = itemView.findViewById(R.id.result_desc);
-      violationCode = itemView.findViewById(R.id.violation_code);
-      this.violationDesc = itemView.findViewById(R.id.violation_desc);
-      inspectionMemo = itemView.findViewById(R.id.inspection_memo);
+      FacilityDetailFragment.this.facility = facilityInspections.getFacility();
+      FacilityDetailFragment.this.inspections = facilityInspections.getInspections();
+      FacilityDetailFragment.this.setPagerAdapter();
     }
 
-    public void setItemProperties(String date, String resultDesc, String violationCode,
-        String violationDesc, String inspectionMemo) {
-      inspectionDate.setText(date);
-      this.resultDesc.setText(resultDesc);
-      this.violationCode.setText(violationCode);
-      this.violationDesc.setText(violationDesc);
-      this.inspectionMemo.setText(inspectionMemo);
-    }
-  }
 
-  private class InspectionsAdapter extends RecyclerView.Adapter {
-
-    private List<Inspection> inspections;
-
-    InspectionsAdapter(List<Inspection> inspections) {
-      this.inspections = inspections;
-    }
-
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-      LayoutInflater inflater = LayoutInflater.from(getActivity());
-      return new InspectionHolder(inflater, parent);
-    }
-
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-      Inspection inspection = inspections.get(position);
-      InspectionHolder iHolder = (InspectionHolder) holder;
-      iHolder.setItemProperties(inspection.getInspectionDate(), inspection.getResultDesc(),
-          inspection.getViolationCode(), inspection.getViolationDesc(),
-          inspection.getInspectionMemo());
-
-    }
-
-    @Override
-    public int getItemCount() {
-      return inspections.size();
-    }
   }
 }
