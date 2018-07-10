@@ -10,6 +10,11 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.mweslacey.city.foodfail.R;
 import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
 import com.mweslacey.city.foodfail.model.entity.Facility;
@@ -17,7 +22,7 @@ import com.mweslacey.city.foodfail.model.entity.Inspection;
 import com.mweslacey.city.foodfail.model.pojo.FacilityAndAllInspections;
 import java.util.List;
 
-public class FacilityDetailFragment extends Fragment {
+public class FacilityDetailFragment extends Fragment implements OnMapReadyCallback{
 
   private static final String ARG_FACILITY_KEY =
       "com.mweslacey.city.foodfail.model.facilitydetailfragment.FacilityKey";
@@ -26,6 +31,8 @@ public class FacilityDetailFragment extends Fragment {
   private Facility facility;
   private List<Inspection> inspections;
   private ViewPager viewPager;
+  GoogleMap gMap;
+
 
   private OnFragmentInteractionListener mListener;
 
@@ -39,6 +46,13 @@ public class FacilityDetailFragment extends Fragment {
     args.putInt(ARG_FACILITY_KEY, facilityKey);
     fragment.setArguments(args);
     return fragment;
+  }
+
+  @Override
+  public void onMapReady(GoogleMap googleMap) {
+    if (googleMap != null) {
+      gMap = googleMap;
+    }
   }
 
   @Override
@@ -61,6 +75,8 @@ public class FacilityDetailFragment extends Fragment {
     super.onViewCreated(view, savedInstanceState);
     viewPager = view.findViewById(R.id.detail_view_pager);
     new AsyncQuery().execute(facilityKey);
+    SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.detail_map);
+    mapFragment.getMapAsync(this);
   }
 
   @Override
