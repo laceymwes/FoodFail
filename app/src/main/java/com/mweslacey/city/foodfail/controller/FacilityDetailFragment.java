@@ -10,17 +10,25 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mweslacey.city.foodfail.BuildConfig;
 import com.mweslacey.city.foodfail.R;
+import com.mweslacey.city.foodfail.model.Geometry;
 import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
 import com.mweslacey.city.foodfail.model.entity.Facility;
 import com.mweslacey.city.foodfail.model.entity.Inspection;
 import com.mweslacey.city.foodfail.model.pojo.FacilityAndAllInspections;
+import com.mweslacey.city.foodfail.service.GeoCodeService;
+import java.io.IOException;
 import java.util.List;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FacilityDetailFragment extends Fragment implements OnMapReadyCallback{
 
@@ -31,7 +39,11 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
   private Facility facility;
   private List<Inspection> inspections;
   private ViewPager viewPager;
-  GoogleMap gMap;
+  private GoogleMap gMap;
+  private GeoCodeService geoService;
+  private Geometry location;
+
+  private String addressParameter;
 
 
   private OnFragmentInteractionListener mListener;
@@ -61,6 +73,7 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
     if (getArguments() != null) {
       facilityKey = getArguments().getInt(ARG_FACILITY_KEY);
     }
+    setupService();
   }
 
   @Override
@@ -74,9 +87,9 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     viewPager = view.findViewById(R.id.detail_view_pager);
-    new AsyncQuery().execute(facilityKey);
     SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager().findFragmentById(R.id.detail_map);
     mapFragment.getMapAsync(this);
+    new AsyncQuery().execute(facilityKey);
   }
 
   @Override
@@ -113,6 +126,19 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
     });
   }
 
+  private void setupService(){
+    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+        .create();
+    Retrofit retrofit = new Retrofit.Builder()
+        .baseUrl(BuildConfig.BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .build();
+    geoService = retrofit.create(GeoCodeService.class);
+  }
+
+  private void setMapLocation() {
+    
+  }
 
   public interface OnFragmentInteractionListener {
 
@@ -133,8 +159,49 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
       FacilityDetailFragment.this.facility = facilityInspections.getFacility();
       FacilityDetailFragment.this.inspections = facilityInspections.getInspections();
       FacilityDetailFragment.this.setPagerAdapter();
+      addressParameter = facility.getStreetNumber() + "+" + facility.getStreetName() + ",+"
+         + "Albuquerque" + ",+" + facility.getState() + "+" + facility.getZip();
+      new AsyncRequest().execute();
+    }
+  }
+
+  private class AsyncRequest extends AsyncTask<Void, Void, Geometry> {
+
+    private Geometry location;
+
+    @Override
+    protected void onPostExecute(Geometry geometry) {
+      FacilityDetailFragment.this.location = location;
+      setMapLocation();
     }
 
+    @Override
+    protected void onProgressUpdate(Void... values) {
+      super.onProgressUpdate(values);
+    }
 
+    @Override
+    protected void onCancelled(Geometry geometry) {
+      Context context = getActivity();
+      Toast.makeText(context,
+          context.getString(R.string.geo_request_failure), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected Geometry doInBackground(Void... voids) {
+      try {
+        Response<Geometry> response = geoService.get(addressParameter, BuildConfig.API_KEY).execute();
+        if (response.isSuccessful()) {
+          location = response.body();
+        }
+      } catch (IOException e) {
+        //FIXME: Determine best action for failure
+      } finally {
+        if (location == null){
+          cancel(true);
+        }
+      }
+      return location;
+    }
   }
 }

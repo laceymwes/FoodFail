@@ -48,30 +48,6 @@ public class Inspection {
   @ColumnInfo(name = "inspection_memo")
   private String inspectionMemo;
 
-  @Ignore
-  @Expose(deserialize = true, serialize = false)
-  private Long longitude;
-
-  @Ignore
-  @Expose(deserialize = true, serialize = false)
-  private Long latitude;
-
-  public Long getLongitude() {
-    return longitude;
-  }
-
-  public void setLongitude(Long longitude) {
-    this.longitude = longitude;
-  }
-
-  public Long getLatitude() {
-    return latitude;
-  }
-
-  public void setLatitude(Long latitude) {
-    this.latitude = latitude;
-  }
-
   @NonNull
   public long getInspectionID() {
     return inspectionID;

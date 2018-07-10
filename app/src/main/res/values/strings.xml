@@ -20,5 +20,6 @@
   <string name="violation_description_label">Violation Description</string>
   <string name="inspection_memorandum_label">Inspection Memorandum</string>
   <string name="violation_code_label">Violation Code</string>
+  <string name="geo_request_failure">The request to Google\'s Geocode API has failed</string>
 
 </resources>
