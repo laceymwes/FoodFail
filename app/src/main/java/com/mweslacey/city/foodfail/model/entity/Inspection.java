@@ -5,9 +5,11 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.ColorLong;
 import android.support.annotation.NonNull;
+import com.google.gson.annotations.Expose;
 
 @Entity(tableName = "inspections",   foreignKeys = @ForeignKey(entity = Facility.class,
 /* if a facility is removed all inspection*/  parentColumns = "facility_key",
@@ -45,6 +47,30 @@ public class Inspection {
 
   @ColumnInfo(name = "inspection_memo")
   private String inspectionMemo;
+
+  @Ignore
+  @Expose(deserialize = true, serialize = false)
+  private Long longitude;
+
+  @Ignore
+  @Expose(deserialize = true, serialize = false)
+  private Long latitude;
+
+  public Long getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(Long longitude) {
+    this.longitude = longitude;
+  }
+
+  public Long getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(Long latitude) {
+    this.latitude = latitude;
+  }
 
   @NonNull
   public long getInspectionID() {
