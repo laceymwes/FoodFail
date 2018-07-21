@@ -1,8 +1,7 @@
-package com.mweslacey.city.foodfail.controller;
+package com.mweslacey.city.foodfail.fragment;
 
 import static android.support.constraint.Constraints.TAG;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,9 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.mweslacey.city.foodfail.R;
-import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
-import com.mweslacey.city.foodfail.model.entity.Inspection;
-import org.w3c.dom.Text;
 
 public class InspectionFragment extends Fragment {
 

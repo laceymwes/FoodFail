@@ -1,5 +1,6 @@
 package com.mweslacey.city.foodfail.controller;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
@@ -11,23 +12,29 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import com.mweslacey.city.foodfail.R;
+import com.mweslacey.city.foodfail.fragment.FacilityDetailFragment;
+import com.mweslacey.city.foodfail.fragment.LandingFragment;
+import com.mweslacey.city.foodfail.fragment.LocalMapFragment;
+import com.mweslacey.city.foodfail.fragment.SearchFragment;
+import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
+import com.mweslacey.city.foodfail.model.pojo.FacilityAndLastInspection;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener,
-    LandingFragment.OnFragmentInteractionListener,
-    LocalMapFragment.OnFragmentInteractionListener,
-    SearchFragment.OnFragmentInteractionListener,
-    FacilityDetailFragment.OnFragmentInteractionListener{
+    implements NavigationView.OnNavigationItemSelectedListener {
 
-  public static final String SEARCH_FRAGMENT_TITLE = "Search";
-  public static final String LOCAL_FRAGMENT_TITLE = "Local Facilities";
+  private static final String LOCAL_TAG = "Local Facilities";
+  private static final String SEARCH_TAG = "Search Facilities";
+
   private LandingFragment landingFragment;
   private Fragment fragment;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    new SearchAsync().execute("");
     landingFragment = LandingFragment.newInstance();
     setContentView(R.layout.activity_main);
     getSupportFragmentManager().beginTransaction()
@@ -56,24 +63,6 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.main, menu);
-    return true;
-  }
-
-
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    //noinspection SimplifiableIfStatement
-    return true;
-  }
-
   @SuppressWarnings("StatementWithEmptyBody")
   @Override
   public boolean onNavigationItemSelected(MenuItem item) {
@@ -84,7 +73,7 @@ public class MainActivity extends AppCompatActivity
     return true;
   }
 
-  public void loadFragment(int itemId) {
+  private void loadFragment(int itemId) {
     switch(itemId) {
       case R.id.nav_local:
         fragment = LocalMapFragment.newInstance();
@@ -97,13 +86,14 @@ public class MainActivity extends AppCompatActivity
         .replace(R.id.fragment_container, fragment).commit();
   }
 
-  @Override
-  public void searchTitle() {
-    getSupportActionBar().setTitle(SEARCH_FRAGMENT_TITLE);
+
+  private class SearchAsync extends AsyncTask<String, Void, List<FacilityAndLastInspection>> {
+
+    @Override
+    protected List<FacilityAndLastInspection> doInBackground(String... searches) {
+      return InspectionDatabase.getInstance(MainActivity.this)
+          .getInspectionDAO().getMatches(searches[0]);
+    }
   }
 
-  @Override
-  public void localTitle() {
-    getSupportActionBar().setTitle(LOCAL_FRAGMENT_TITLE);
-  }
 }

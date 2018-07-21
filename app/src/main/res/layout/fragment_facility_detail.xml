@@ -3,20 +3,16 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/colorAccent"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  tools:context="com.mweslacey.city.foodfail.controller.FacilityDetailFragment">
+  tools:context="com.mweslacey.city.foodfail.fragment.FacilityDetailFragment">
 
-  <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+  <com.google.android.gms.maps.MapView
     android:id="@+id/detail_map"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    tools:context=".MapsActivity"/>
+    app:layout_constraintLeft_toLeftOf="parent" />
 
 <android.support.v4.view.ViewPager
   android:id="@+id/detail_view_pager"

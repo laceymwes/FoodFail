@@ -1,4 +1,4 @@
-package com.mweslacey.city.foodfail.controller;
+package com.mweslacey.city.foodfail.fragment;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -21,7 +21,6 @@ import java.util.List;
 
 public class SearchFragment extends Fragment {
 
-  private OnFragmentInteractionListener mListener;
   private RecyclerView recyclerView;
   private EditText facilitySearch;
   private ImageView searchIcon;
@@ -37,10 +36,8 @@ public class SearchFragment extends Fragment {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    mListener.searchTitle();
     super.onCreate(savedInstanceState);
   }
-
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,31 +60,16 @@ public class SearchFragment extends Fragment {
   }
 
   @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
-    if (context instanceof OnFragmentInteractionListener) {
-      mListener = (OnFragmentInteractionListener) context;
-    } else {
-      throw new RuntimeException(context.toString()
-          + " must implement OnFragmentInteractionListener");
-    }
-  }
-
-  @Override
   public void onDetach() {
     super.onDetach();
-    mListener = null;
   }
 
-  public interface OnFragmentInteractionListener {
-    public void searchTitle();
-  }
 
   private class SearchAsync extends AsyncTask<String, Void, List<FacilityAndLastInspection>> {
 
     @Override
     protected List<FacilityAndLastInspection> doInBackground(String... searches) {
-      return InspectionDatabase.getInstance(SearchFragment.this.getContext())
+      return InspectionDatabase.getInstance(getActivity())
       .getInspectionDAO().getMatches(searches[0]);
     }
 
@@ -129,7 +111,7 @@ public class SearchFragment extends Fragment {
         }
       });
       if (inspection.contains(FAILURE)) {
-        complianceFlag.setImageDrawable(getContext().getDrawable(R.drawable.ic_clear_red_24dp));
+        complianceFlag.setImageDrawable(getActivity().getDrawable(R.drawable.ic_clear_red_24dp));
       }
     }
 

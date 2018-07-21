@@ -12,6 +12,8 @@
   <string name="landing_body">Find the inspection history of any facility that handles food!</string>
   <string name="title_local">Local Facilities</string>
   <string name="title_search">Search for Facilities</string>
+  <string name="title_landing">Home</string>
+  <string name="facility_detail">Facility</string>
   <string name="search">Search</string>
   <string name="food_fail_menu">Food Fail Menu</string>
   <string name="food_fail_email">foodfail.abq@mweslacey.com</string>

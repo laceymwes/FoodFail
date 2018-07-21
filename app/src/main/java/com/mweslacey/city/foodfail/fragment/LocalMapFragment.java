@@ -1,7 +1,6 @@
-package com.mweslacey.city.foodfail.controller;
+package com.mweslacey.city.foodfail.fragment;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,8 +19,6 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
 
   GoogleMap gMap;
 
-  private OnFragmentInteractionListener mListener;
-
   public LocalMapFragment() {
     // Required empty public constructor
   }
@@ -32,7 +29,6 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
-    mListener.localTitle();
     super.onCreate(savedInstanceState);
   }
 
@@ -44,28 +40,8 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
   }
 
   @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
-    if (context instanceof OnFragmentInteractionListener) {
-      mListener = (OnFragmentInteractionListener) context;
-    } else {
-      throw new RuntimeException(context.toString()
-          + " must implement OnFragmentInteractionListener");
-    }
-  }
-
-  @Override
-  public void onDetach() {
-    super.onDetach();
-    mListener = null;
-  }
-
-  @Override
   public void onMapReady(GoogleMap googleMap) {
     gMap = googleMap;
   }
 
-  public interface OnFragmentInteractionListener {
-    public void localTitle();
-  }
 }
