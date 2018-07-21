@@ -40,6 +40,12 @@ public class SearchFragment extends Fragment {
   }
 
   @Override
+  public void onResume() {
+    super.onResume();
+    getActivity().setTitle(R.string.title_search);
+  }
+
+  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     // Inflate the layout for this fragment
@@ -49,6 +55,7 @@ public class SearchFragment extends Fragment {
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    getActivity().setTitle(R.string.title_search);
     facilitySearch = view.findViewById(R.id.facility_search);
     searchIcon = view.findViewById(R.id.search_icon);
     searchIcon.setOnClickListener(new View.OnClickListener(){

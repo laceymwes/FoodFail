@@ -30,4 +30,7 @@ public interface InspectionDAO {
   @Query(Queries.SINGLE_INSPECTION)
   public Inspection getInspection(int inspectionID);
 
+  @Query(Queries.LOCAL_FACILITIES)
+  public FacilityAndLastInspection getLocalFacilities(int zip);
+
 }

@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
+
+
   private class SearchAsync extends AsyncTask<String, Void, List<FacilityAndLastInspection>> {
 
     @Override

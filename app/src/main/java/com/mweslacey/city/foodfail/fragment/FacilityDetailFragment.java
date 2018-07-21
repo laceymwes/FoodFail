@@ -102,7 +102,6 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    getActivity().setTitle(R.string.facility_detail);
     setupService();
     viewPager = view.findViewById(R.id.detail_view_pager);
     new AsyncQuery().execute(facilityKey);
@@ -254,6 +253,7 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
     protected void onPostExecute(Result result) {
       FacilityDetailFragment.this.result = result;
       FacilityDetailFragment.this.mapView.getMapAsync(FacilityDetailFragment.this);
+      getActivity().setTitle(facility.getFacilityName());
     }
   }
 }

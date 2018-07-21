@@ -33,6 +33,12 @@ public class LandingFragment extends Fragment {
   }
 
   @Override
+  public void onResume() {
+    super.onResume();
+    getActivity().setTitle(R.string.title_landing);
+  }
+
+  @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     getActivity().setTitle(R.string.title_landing);
