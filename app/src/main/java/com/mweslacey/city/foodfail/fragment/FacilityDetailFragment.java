@@ -20,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mweslacey.city.foodfail.BuildConfig;
@@ -139,7 +140,6 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
 
   @Override
   public void onDestroy() {
-    getActivity().findViewById(R.id.nav_search).setEnabled(true);
     super.onDestroy();
     mapView.onDestroy();
   }
@@ -186,8 +186,9 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
   private void setMapLocation() {
     double lat = result.getGeometryCoordinates()[0];
     double lng = result.getGeometryCoordinates()[1];
+    gMap.addMarker(new MarkerOptions().position(new LatLng(lat, lng)));
     CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(lat, lng));
-    gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 10));
+    gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
   }
 
   private class AsyncQuery extends AsyncTask<Integer, Void, FacilityAndAllInspections> {

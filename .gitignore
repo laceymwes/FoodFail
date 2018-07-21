@@ -7,5 +7,6 @@
 /build
 /captures
 .externalNativeBuild
-app/manifests
+app/src/main/AndroidManifest.xml
 app/src/main/res/raw/inspection_records.csv
+
