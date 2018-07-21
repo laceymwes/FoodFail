@@ -139,6 +139,7 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
 
   @Override
   public void onDestroy() {
+    getActivity().findViewById(R.id.nav_search).setEnabled(true);
     super.onDestroy();
     mapView.onDestroy();
   }

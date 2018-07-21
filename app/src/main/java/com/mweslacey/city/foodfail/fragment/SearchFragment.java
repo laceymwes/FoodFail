@@ -60,6 +60,11 @@ public class SearchFragment extends Fragment {
   }
 
   @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+  }
+
+  @Override
   public void onDetach() {
     super.onDetach();
   }

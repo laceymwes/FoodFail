@@ -2,19 +2,17 @@ package com.mweslacey.city.foodfail.controller;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import com.mweslacey.city.foodfail.R;
-import com.mweslacey.city.foodfail.fragment.FacilityDetailFragment;
 import com.mweslacey.city.foodfail.fragment.LandingFragment;
 import com.mweslacey.city.foodfail.fragment.LocalMapFragment;
 import com.mweslacey.city.foodfail.fragment.SearchFragment;
@@ -28,27 +26,26 @@ public class MainActivity extends AppCompatActivity
   private static final String LOCAL_TAG = "Local Facilities";
   private static final String SEARCH_TAG = "Search Facilities";
 
-  private LandingFragment landingFragment;
   private Fragment fragment;
+  FragmentManager fManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    fManager = getSupportFragmentManager();
     new SearchAsync().execute("");
-    landingFragment = LandingFragment.newInstance();
+    fragment = LandingFragment.newInstance();
     setContentView(R.layout.activity_main);
-    getSupportFragmentManager().beginTransaction()
+    fManager.beginTransaction()
         .addToBackStack(null)
-        .add(R.id.fragment_container, landingFragment).commit();
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        .add(R.id.fragment_container, fragment).commit();
+    Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    DrawerLayout drawer = findViewById(R.id.drawer_layout);
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
         this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
     drawer.addDrawerListener(toggle);
     toggle.syncState();
-
     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
     navigationView.setNavigationItemSelectedListener(this);
   }
@@ -74,18 +71,31 @@ public class MainActivity extends AppCompatActivity
   }
 
   private void loadFragment(int itemId) {
-    switch(itemId) {
+    switch (itemId) {
       case R.id.nav_local:
-        fragment = LocalMapFragment.newInstance();
-        break;
+        if (fManager.findFragmentByTag(LOCAL_TAG) == null) {
+          // Remove last fragment to allow for continuous peer navigation
+          fManager.popBackStackImmediate();
+          fragment = LocalMapFragment.newInstance();
+          fManager.beginTransaction()
+              .addToBackStack(null)
+              .replace(R.id.fragment_container, fragment, LOCAL_TAG).commit();
+          break;
+        }
+        return;
       case R.id.nav_search:
-        fragment = SearchFragment.newInstance();
+        if (fManager.findFragmentByTag(SEARCH_TAG) == null) {
+          // Remove last fragment to allow for continuous peer navigation
+          fManager.popBackStackImmediate();
+          fragment = SearchFragment.newInstance();
+          fManager.beginTransaction()
+              .addToBackStack(null)
+              .replace(R.id.fragment_container, fragment, SEARCH_TAG).commit();
+        } else {
+          return;
+        }
     }
-    getSupportFragmentManager().beginTransaction()
-        .addToBackStack(null)
-        .replace(R.id.fragment_container, fragment).commit();
   }
-
 
   private class SearchAsync extends AsyncTask<String, Void, List<FacilityAndLastInspection>> {
 
