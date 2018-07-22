@@ -20,7 +20,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-@Database(entities = {Facility.class, Inspection.class}, version = 1, exportSchema = false)
+@Database(entities = {Facility.class, Inspection.class}, version = 1, exportSchema = true)
 public abstract class InspectionDatabase extends RoomDatabase {
 
   public static final String DATABASE_NAME = "inspection_db";

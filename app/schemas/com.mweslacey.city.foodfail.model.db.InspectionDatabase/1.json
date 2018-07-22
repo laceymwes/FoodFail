@@ -1,0 +1,163 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "262e824da6d8a1f2c5842eb2a2a8ac30",
+    "entities": [
+      {
+        "tableName": "facilities",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`facility_key` INTEGER NOT NULL, `facility_name` TEXT COLLATE NOCASE, `street_number` TEXT, `street_name` TEXT, `zip` INTEGER NOT NULL, `state` TEXT, PRIMARY KEY(`facility_key`))",
+        "fields": [
+          {
+            "fieldPath": "facilityKey",
+            "columnName": "facility_key",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "facilityName",
+            "columnName": "facility_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "streetNumber",
+            "columnName": "street_number",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "streetName",
+            "columnName": "street_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "zip",
+            "columnName": "zip",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "facility_key"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_facilities_facility_key",
+            "unique": false,
+            "columnNames": [
+              "facility_key"
+            ],
+            "createSql": "CREATE  INDEX `index_facilities_facility_key` ON `${TABLE_NAME}` (`facility_key`)"
+          },
+          {
+            "name": "index_facilities_facility_name",
+            "unique": false,
+            "columnNames": [
+              "facility_name"
+            ],
+            "createSql": "CREATE  INDEX `index_facilities_facility_name` ON `${TABLE_NAME}` (`facility_name`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "inspections",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`inspection_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `facility_id` INTEGER NOT NULL, `inspection_date` TEXT, `result_code` INTEGER NOT NULL, `result_desc` TEXT, `violation_code` TEXT, `violation_desc` TEXT, `inspection_memo` TEXT, FOREIGN KEY(`facility_id`) REFERENCES `facilities`(`facility_key`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "inspectionID",
+            "columnName": "inspection_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "facilityID",
+            "columnName": "facility_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inspectionDate",
+            "columnName": "inspection_date",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "resultCode",
+            "columnName": "result_code",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resultDesc",
+            "columnName": "result_desc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "violationCode",
+            "columnName": "violation_code",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "violationDesc",
+            "columnName": "violation_desc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "inspectionMemo",
+            "columnName": "inspection_memo",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "inspection_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_inspections_facility_id",
+            "unique": false,
+            "columnNames": [
+              "facility_id"
+            ],
+            "createSql": "CREATE  INDEX `index_inspections_facility_id` ON `${TABLE_NAME}` (`facility_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "facilities",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "facility_id"
+            ],
+            "referencedColumns": [
+              "facility_key"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"262e824da6d8a1f2c5842eb2a2a8ac30\")"
+    ]
+  }
+}

@@ -50,7 +50,7 @@ The application has been tested with Android API levels 25 through 27 on the Nex
 
 ## Data
 - [Entity Relationship Diagram (ERD)](database/ERD.pdf)
--
+- [Data Definition Language (DDL)](database/ddl.sql)
 
 ## Documentation
 
