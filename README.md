@@ -1,4 +1,4 @@
-# __Food Fail__
+
 
 ## What
 Food Fail is an Android application that allows users to view the  inspection history of any facility that handles food in Albuquerque, NM. Users can search for facilities by name and view the facility's exact location via an embedded Google Map.
