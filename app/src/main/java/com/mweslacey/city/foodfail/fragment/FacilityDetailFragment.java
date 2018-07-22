@@ -2,7 +2,6 @@ package com.mweslacey.city.foodfail.fragment;
 
 import static android.support.constraint.Constraints.TAG;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,12 +24,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mweslacey.city.foodfail.BuildConfig;
 import com.mweslacey.city.foodfail.R;
-import com.mweslacey.city.foodfail.service.Result;
 import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
 import com.mweslacey.city.foodfail.model.entity.Facility;
 import com.mweslacey.city.foodfail.model.entity.Inspection;
 import com.mweslacey.city.foodfail.model.pojo.FacilityAndAllInspections;
 import com.mweslacey.city.foodfail.service.GeoCodeService;
+import com.mweslacey.city.foodfail.service.Result;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.OkHttpClient;
@@ -41,6 +40,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Detail View for user-selected facility.
+ * FacilityDetailFragment is attached to MainActivity after user selects a facility from the list
+ * generated in the SearchFragment.
+ * This View displays a Google Map showing the location of the previously selected facility.
+ */
 public class FacilityDetailFragment extends Fragment implements OnMapReadyCallback {
 
   private static final String ARG_FACILITY_KEY =
@@ -58,10 +63,21 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
 
   private String addressParameter;
 
+  /**
+   * Empty constructor meant to be utilized by the {@link #newInstance(int)} method.
+   */
   public FacilityDetailFragment() {
     // Required empty public constructor
   }
 
+  /**
+   * Builds a new FacilityDetailFragment and sets arguments to be utilized in a database query
+   * and the subsequent user interface updates.
+   *
+   * @param facilityKey provided by the caller and used by {@link FacilityDetailFragment}
+   * to select the appropriate record from the database.
+   * @return {@link FacilityDetailFragment}
+   */
   public static FacilityDetailFragment newInstance(int facilityKey) {
     FacilityDetailFragment fragment = new FacilityDetailFragment();
     Bundle args = new Bundle();
@@ -166,6 +182,9 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
     });
   }
 
+  /*
+  Custom HTTP client allows for Retrofit request/response analysis.
+   */
   private void setupService() {
     HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
     logging.setLevel(Level.BODY);
@@ -182,6 +201,10 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
     geoService = retrofit.create(GeoCodeService.class);
   }
 
+  /*
+  Extract latitude and longitude from Geocoding response.
+  Update Google Map camera to display facility location and marker.
+   */
   private void setMapLocation() {
     double lat = result.getGeometryCoordinates()[0];
     double lng = result.getGeometryCoordinates()[1];
@@ -190,6 +213,9 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
     gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat, lng), 15));
   }
 
+  /*
+  Custom AsyncTask that selects the Facility record for the user-selected facility.
+   */
   private class AsyncQuery extends AsyncTask<Integer, Void, FacilityAndAllInspections> {
 
     @Override
@@ -213,6 +239,11 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
     }
   }
 
+  /*
+  Custom AsyncTask utilized by Retrofit service to retrieve the longitude and latitude
+  coordinates of the user-selected facility.
+  Return coordinates are used to update the Google Map Camera.
+   */
   private class AsyncRequest extends AsyncTask<Void, Void, Result> {
 
     private Result result;

@@ -1,21 +1,29 @@
 package com.mweslacey.city.foodfail.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.mweslacey.city.foodfail.R;
 
+/**
+ * First Fragment attached to MainActivity upon application loading.
+ */
 public class LandingFragment extends Fragment {
 
+  /**
+   * Empty constructor utilized by {@link #newInstance()}
+   */
   public LandingFragment() {
     // Required empty public constructor
   }
 
+  /**
+   * Builds new LandingFragment.
+   * @return {@link LandingFragment}
+   */
   public static LandingFragment newInstance() {
     return new LandingFragment();
   }

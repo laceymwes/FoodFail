@@ -1,26 +1,40 @@
 package com.mweslacey.city.foodfail.service;
 
-import android.provider.Telephony.Mms.Addr;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.mweslacey.city.foodfail.service.ReverseResult.Results.AddressComponents;
 import java.util.List;
 
-
+/**
+ * Java object defining return type for {@link GeoCodeService#getPostal(String)}.
+ * Defines class and field mapping for de-serialization of JSON response object.
+ */
 public class ReverseResult {
 
   @Expose
   @SerializedName("results")
   private List<Results> results;
 
+  /**
+   * Get List of Results de-serialized by Gson and initialized by Retrofit.
+   * @return List Results
+   */
   public List<Results> getResults() {
     return results;
   }
 
+  /**
+   * Utilized by Retrofit to initialize List of Results
+   * @param results
+   */
   public void setResults(List<Results> results) {
     this.results = results;
   }
 
+  /**
+   * Get latitude and longitude coordinates from Results.
+   * @return double[] coordinates
+   */
   public double[] getGeometryCoordinates() {
     double[] coordinates = {
         results.get(0).getGeometry().getLocation().getLatitude(),
@@ -29,12 +43,17 @@ public class ReverseResult {
     return coordinates;
   }
 
+  /**
+   * Get postal code from Results.
+   * @return int postal code
+   */
   public int getPostalCode() {
     if (results.size() > 0) {
       List<AddressComponents> components = results.get(0).getAddressComponents();
       return Integer.parseInt(components.get(components.size() - 1).longName);
+    } else {
+      return -1;
     }
-    else return -1;
   }
 
   public class Results {
@@ -69,7 +88,7 @@ public class ReverseResult {
         return longName;
       }
 
-      public String getShortName(){
+      public String getShortName() {
         return shortName;
       }
 

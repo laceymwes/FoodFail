@@ -20,6 +20,9 @@ import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
 import com.mweslacey.city.foodfail.model.pojo.FacilityAndLastInspection;
 import java.util.List;
 
+/**
+ * Entry point for Food Fail Application. Main controller for fragments.
+ */
 public class MainActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -51,6 +54,9 @@ public class MainActivity extends AppCompatActivity
     navigationView.setNavigationItemSelectedListener(this);
   }
 
+  /**
+   * Hides navigation drawer on upward navigation.
+   */
   @Override
   public void onBackPressed() {
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -71,6 +77,7 @@ public class MainActivity extends AppCompatActivity
     return true;
   }
 
+  // Identify appropriate fragment and attach to activity with fragment manager.
   private void loadFragment(int itemId) {
     switch (itemId) {
       case R.id.nav_local:
@@ -99,7 +106,10 @@ public class MainActivity extends AppCompatActivity
   }
 
 
-
+  /*
+  Custom AsyncTask used to query database.
+  This is an attempt to pre-load the database prior to user navigating to the search view.
+   */
   private class SearchAsync extends AsyncTask<String, Void, List<FacilityAndLastInspection>> {
 
     @Override

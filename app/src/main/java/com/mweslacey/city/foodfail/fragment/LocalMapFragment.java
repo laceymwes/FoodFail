@@ -43,7 +43,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
+/**
+ * View displaying facilities in the local area.
+ */
 public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
 
   private GoogleMap gMap;
@@ -55,10 +57,17 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
   private GeoCodeService geoService;
   private ReverseResult rResult;
 
+  /**
+   * Empty constructor utilized by the {@link #newInstance()} method.
+   */
   public LocalMapFragment() {
     // Required empty public constructor
   }
 
+  /**
+   * Builds new {@link #LocalMapFragment()}
+   * @return {@link #LocalMapFragment()}
+   */
   public static LocalMapFragment newInstance() {
     return new LocalMapFragment();
   }
@@ -90,6 +99,10 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
     super.onViewCreated(view, savedInstanceState);
   }
 
+  /*
+    Determines whether application has required permissions.
+    Requests permission, or calls getDeviceLocation().
+   */
   private void getLocationPermissions() {
     if (ContextCompat.checkSelfPermission(getActivity(),
         permission.ACCESS_COARSE_LOCATION)
@@ -97,7 +110,7 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
       if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
           Manifest.permission.ACCESS_COARSE_LOCATION)) {
       } else {
-        requestPermissions(new String[] {permission.ACCESS_COARSE_LOCATION}, 0);
+        requestPermissions(new String[]{permission.ACCESS_COARSE_LOCATION}, 0);
       }
     } else {
       getDeviceLocation();
@@ -116,14 +129,22 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
     }
   }
 
+  /*
+  Attempt to retrieve location from LocationManager.
+  Currently only works when another application has an active client sessions with the LocationManager.
+  Location should be successfully retrieved if Google Maps is running in background.
+  TODO: Explore resolutions to this issue.
+   */
   private void getDeviceLocation() {
     try {
       locationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
         @Override
         public void onSuccess(Location location) {
-          lat = location.getLatitude();
-          lng = location.getLongitude();
-          setUpService();
+          if (location != null) {
+            lat = location.getLatitude();
+            lng = location.getLongitude();
+            setUpService();
+          }
         }
       });
     } catch (SecurityException e) {
@@ -138,6 +159,9 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
     }
   }
 
+  /*
+  Custom HTTP client allows for Retrofit request/response analysis.
+   */
   private void setUpService() {
     HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
     logging.setLevel(Level.BODY);
@@ -178,6 +202,11 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
     });
   }
 
+  /*
+  Custom AsyncTask utilizing Retrofit service to make reverse Geocding API call. LocationManager
+  provides latitude and longitude coordinates. Geocoding web-service returns postal code needed
+  for database query.
+   */
   private class AsyncRequest extends AsyncTask<Void, Void, ReverseResult> {
 
     ReverseResult rResult;
@@ -207,6 +236,10 @@ public class LocalMapFragment extends Fragment implements OnMapReadyCallback {
     }
   }
 
+  /*
+  Custom AsyncTask that queries database for all facilities records with postal codes matching that
+  of the provided Geocoding request response.
+   */
   private class SearchAsync extends AsyncTask<Integer, Void, List<FacilityAndLastInspection>> {
 
     @Override

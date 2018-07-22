@@ -1,6 +1,5 @@
 package com.mweslacey.city.foodfail.fragment;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,16 +18,27 @@ import com.mweslacey.city.foodfail.model.db.InspectionDatabase;
 import com.mweslacey.city.foodfail.model.pojo.FacilityAndLastInspection;
 import java.util.List;
 
+/**
+ * View that allows user to search for facilities by name.
+ * User-provided keyword is utilized in database query, return all facilities with matching names.
+ */
 public class SearchFragment extends Fragment {
 
   private RecyclerView recyclerView;
   private EditText facilitySearch;
   private ImageView searchIcon;
 
+  /**
+   * Empty constructor utilized by {@link #newInstance()} method.
+   */
   public SearchFragment() {
     // Required empty public constructor
   }
 
+  /**
+   * Builds new {@link #SearchFragment}
+   * @return {@link #SearchFragment}
+   */
   public static SearchFragment newInstance() {
     return new SearchFragment();
   }
@@ -57,7 +67,7 @@ public class SearchFragment extends Fragment {
     getActivity().setTitle(R.string.title_search);
     facilitySearch = view.findViewById(R.id.facility_search);
     searchIcon = view.findViewById(R.id.search_icon);
-    searchIcon.setOnClickListener(new View.OnClickListener(){
+    searchIcon.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         new SearchAsync().execute(facilitySearch.getText().toString());
@@ -75,13 +85,16 @@ public class SearchFragment extends Fragment {
     super.onDetach();
   }
 
-
+  /*
+  Custom AsyncTask that queries database for all facilities with names matching or containing the
+  user-provided keyword search.
+   */
   private class SearchAsync extends AsyncTask<String, Void, List<FacilityAndLastInspection>> {
 
     @Override
     protected List<FacilityAndLastInspection> doInBackground(String... searches) {
       return InspectionDatabase.getInstance(getActivity())
-      .getInspectionDAO().getMatches(searches[0]);
+          .getInspectionDAO().getMatches(searches[0]);
     }
 
     @Override
@@ -92,6 +105,9 @@ public class SearchFragment extends Fragment {
     }
   }
 
+  /*
+  Required for RecyclerView that holds all records returned by search query.
+   */
   private class FacilityHolder extends RecyclerView.ViewHolder {
 
     private TextView facilityName;
@@ -102,6 +118,10 @@ public class SearchFragment extends Fragment {
 
     private final static String FAILURE = "NOT IN COMPLIANCE";
 
+    /*
+    Custom constructor initializes View references to later be updated when ItemView is
+    bound to ViewHolder.
+     */
     public FacilityHolder(LayoutInflater inflater, ViewGroup parent) {
       super(inflater.inflate(R.layout.facility_search_item, parent, false));
       facilityName = itemView.findViewById(R.id.search_facility_name);
@@ -110,6 +130,9 @@ public class SearchFragment extends Fragment {
       complianceFlag = itemView.findViewById(R.id.search_compliance_flag);
     }
 
+    /*
+    Sets text of views contained in ItemView being bound to ViewHolder and displayed in RecyclerView.
+     */
     public void setItemViewProperties(String name, String address, String inspection,
         final int facilityKey) {
       facilityName.setText(name);
@@ -132,13 +155,15 @@ public class SearchFragment extends Fragment {
           .replace(R.id.fragment_container, fragment).commit();
     }
   }
-
+  /*
+  Required extension for RecyclerView holding facility query results.
+   */
   private class FacilityAdapter extends RecyclerView.Adapter {
 
     private List<FacilityAndLastInspection> facilities;
 
 
-    public FacilityAdapter(List<FacilityAndLastInspection> facilities){
+    public FacilityAdapter(List<FacilityAndLastInspection> facilities) {
       this.facilities = facilities;
     }
 

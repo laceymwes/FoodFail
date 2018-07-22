@@ -1,18 +1,17 @@
 package com.mweslacey.city.foodfail.fragment;
 
-
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 import com.mweslacey.city.foodfail.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Utilized by the ViewPager in {@link LocalMapFragment} to display facility local to the
+ * device's current location.
  */
 public class LocalFacilitiyFragment extends Fragment {
 
@@ -26,10 +25,22 @@ public class LocalFacilitiyFragment extends Fragment {
   private TextView inspectionDate;
   private TextView resultDesc;
 
+  /**
+   * Empty constructor utizlied by the {@link #newInstance(String, String, String, String)} method.
+   */
   public LocalFacilitiyFragment() {
     // Required empty public constructor
   }
 
+  /**
+   * Builds a new {@link #LocalFacilitiyFragment()} and sets arguments to be utilized in a selection
+   * query and subsequent user interface updates.
+   * @param facilityName Name of the local facility.
+   * @param address Address of the local facility.
+   * @param inspectionDate Date of most recent inspection.
+   * @param resultDesc Inspection result description.
+   * @return {@link #LocalFacilitiyFragment()}
+   */
   public static LocalFacilitiyFragment newInstance(String facilityName, String address,
       String inspectionDate, String resultDesc) {
     LocalFacilitiyFragment fragment = new LocalFacilitiyFragment();

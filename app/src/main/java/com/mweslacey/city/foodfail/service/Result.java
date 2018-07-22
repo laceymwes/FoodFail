@@ -4,21 +4,36 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
-
+/**
+ * Java object defining return type for {@link GeoCodeService#getLatLng(String, String)}.
+ * Defines class and field mapping for de-serialization of JSON response object.
+ */
 public class Result {
 
   @Expose
   @SerializedName("results")
   private List<Results> results;
 
+  /**
+   * Get List of Results de-serialized by Gson and initialized by Retrofit.
+   * @return List Results
+   */
   public List<Results> getResults() {
     return results;
   }
 
+  /**
+   * Utilized by Retrofit to initialize List of Results
+   * @param results
+   */
   public void setResults(List<Results> results) {
     this.results = results;
   }
 
+  /**
+   * Get latitude and longitude coordinates from Results.
+   * @return double[] coordinates
+   */
   public double[] getGeometryCoordinates() {
     double[] coordinates = {
         results.get(0).getGeometry().getLocation().getLatitude(),

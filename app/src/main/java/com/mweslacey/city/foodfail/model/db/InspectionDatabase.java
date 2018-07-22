@@ -20,15 +20,32 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * RoomDatabase extension that defines the behavior and SQLite database instantiation constraints
+ * for the Food Fail application.
+ */
 @Database(entities = {Facility.class, Inspection.class}, version = 1, exportSchema = true)
 public abstract class InspectionDatabase extends RoomDatabase {
 
+  /**
+   * Database singleton
+   */
   public static final String DATABASE_NAME = "inspection_db";
 
+  /**
+   * Room implements method to retrieve {@link InspectionDAO} interface.
+   * @return {@link InspectionDatabase}
+   */
   public abstract InspectionDAO getInspectionDAO();
 
   private static InspectionDatabase instance;
 
+  /**
+   * Caller attempts to retrieve database singleton.
+   * Method checks whether database {@link #instance} has already been initialized.
+   * @param context Food Fail application context.
+   * @return {@link InspectionDatabase}
+   */
   public static InspectionDatabase getInstance(Context context) {
     if (instance == null) {
       instance = Room.databaseBuilder(context, InspectionDatabase.class, DATABASE_NAME)
@@ -38,10 +55,18 @@ public abstract class InspectionDatabase extends RoomDatabase {
     return instance;
   }
 
+  /**
+   * Removes reference to {@link InspectionDatabase} object previously instantiated by
+   * {@link #getInstance(Context)} method.
+   * @param context
+   */
   public static void forgetInstance(Context context) {
     instance = null;
   }
 
+  /*
+  Override onCreate Callback method to attempt database population from data set CSV.
+   */
   private static class InspectionCallback extends RoomDatabase.Callback {
 
     private Context context;
@@ -57,6 +82,10 @@ public abstract class InspectionDatabase extends RoomDatabase {
     }
   }
 
+  /*
+  Custom AsyncTask that parses records from data set CSV, instantiates Facility and Inspection objects,
+  then inserts them into the database.
+   */
   private static class PrepopulateTask extends AsyncTask<Context, Void, Void> {
 
     // COLUMN INDICES

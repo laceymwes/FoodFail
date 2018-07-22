@@ -18,6 +18,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "API_KEY", getServiceProperty("apiKey")
         buildConfigField "String", "BASE_URL", getServiceProperty("baseUrl")
+        resValue "string", "API_KEY", getServiceProperty("apiKey")
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
