@@ -71,12 +71,16 @@ __Note__: Since I am unable to upload the CSV data set to GitHub due to size con
 10. Select Build/Build from the top menu items.
 
 #### Use
-__Note__: Project min SDK version is Android API 21. Please use an emulator  or device with API 21 or higher installed when attempting to run this application.
+__Note__: Project min SDK version is Android API 21. Please use an emulator  or device with API 21 or higher installed when attempting to run this application. In order for Android to provide location for the Local Facilities view, you will need to run the application on a physical device.
 1. After a successful build select Run/Edit configurations from the top menu items.
 2. Select the plus icon and "Android App" from the top left of the dialogue.
 3. Select "app" from the Module drop-down menu.
 3. Select "OK" at the bottom. (You can name the configuration whatever you like)
-4. Select Run/Run from the top menu items.
+4. Select Run/Run from the top menu items. (Due to current pre-population challenges, let the application sit at the landing page for 30 seconds or more)
+5. Application usage and navigation is fairly straight-forward.
+6. Use the side nav drawer to view facilities in your area, or search for facilities by name.
+7. Clicking on a facility in the Search view will take you to a detail view, where you can see inspection records for the selected facility.
+8. Scroll left and right to view each inspection record. 
 
 ## Licensing
 [Food Fail and third part library licenses](License.md)
