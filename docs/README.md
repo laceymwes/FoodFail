@@ -19,6 +19,7 @@ The city of   Albuquerque has many publicly available data sets, including the h
 - Database pre-loading is inconsistent, meaning not all facilities and their inspection records are successfully loaded.
 - Debugging shows successful reverse Google Geocoding API calls (provide location lat/lng) to extract postal code, and successful database query utilizing said postal code. ViewPager has no facilities to display due to record truncating issue in the database pre-load callback method.
 - Undesirable upward navigation behavior when user uses navigation drawer from the search/detail view. Negatively impacts user experience.
+- Application is only able to retrieve the current location of the device if another application has an active client session with the LocationManager. Location feature is testable with Google Maps running in background.
 
 ## Testing
 The application has been tested with Android API levels 25 through 27 on the Nexus 6 and Pixel emulator hardware profiles. Final testing has been conducted using the Essential Phone (PH-1).
@@ -52,11 +53,30 @@ The application has been tested with Android API levels 25 through 27 on the Nex
 - [Data Definition Language (DDL)](database/ddl.sql)
 
 ## Documentation
+[Javadoc](docs/api/index.html)
 
+## Build  and Usage Instructions
 
-## Build Instructions
+#### Build
+__Note__: Since I am unable to upload the CSV data set to GitHub due to size constraints, before cloning this repository please download [this file](http://data.cabq.gov/business/foodinspections/FoodInspectionsCurrentFY-en-us.csv). Open it in your spreadsheet program and save as "CSV".
+1. Navigate to the [Food Fail GitHub repository](https://github.com/laceymwes/FoodFail) and select "Clone or download" on the right-hand side, at the top of the page.
+2. Copy the SSH .git repository link from the drop-down dialogue.
+3. Open IntelliJ and select "Check out form version control".
+4. Paste the .git repository link copied in step 2 and select "clone".
+5. Select "No" on the Check Out From Version Control prompt.
+6. Select "Import Project", and select "Gradle", then "Next".
+7. If prompted to overwrite file, select yes.
+8. Open the buid.gradle script and specify the path for the .properties file containing the necessary API key.
+9. After a successful sync, select move the previously downloaded CSV data set to the app/src/main/res/raw/ directory of the project. Save it as inspection_records.csv.
+10. Select Build/Build from the top menu items.
 
-
-## Usage Instructions
+#### Use
+__Note__: Project min SDK version is Android API 21. Please use an emulator  or device with API 21 or higher installed when attempting to run this application.
+1. After a successful build select Run/Edit configurations from the top menu items.
+2. Select the plus icon and "Android App" from the top left of the dialogue.
+3. Select "app" from the Module drop-down menu.
+3. Select "OK" at the bottom. (You can name the configuration whatever you like)
+4. Select Run/Run from the top menu items.
 
 ## Licensing
+[Food Fail and third part library licenses](License.md)
