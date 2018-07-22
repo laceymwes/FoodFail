@@ -1,0 +1,8 @@
+com.mweslacey.city.foodfail
+com.mweslacey.city.foodfail.controller
+com.mweslacey.city.foodfail.fragment
+com.mweslacey.city.foodfail.model.dao
+com.mweslacey.city.foodfail.model.db
+com.mweslacey.city.foodfail.model.entity
+com.mweslacey.city.foodfail.model.pojo
+com.mweslacey.city.foodfail.service
