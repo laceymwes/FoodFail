@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity
   private static final String SEARCH_TAG = "Search Facilities";
 
   private Fragment fragment;
-  FragmentManager fManager;
+  private FragmentManager fManager;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

@@ -31,6 +31,6 @@ public interface InspectionDAO {
   public Inspection getInspection(int inspectionID);
 
   @Query(Queries.LOCAL_FACILITIES)
-  public FacilityAndLastInspection getLocalFacilities(int zip);
+  public List<FacilityAndLastInspection> getLocalFacilities(int zip);
 
 }

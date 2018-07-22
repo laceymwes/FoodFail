@@ -224,16 +224,15 @@ public class FacilityDetailFragment extends Fragment implements OnMapReadyCallba
 
     @Override
     protected void onCancelled(Result result) {
-      Context context = getActivity();
-      Toast.makeText(context,
-          context.getString(R.string.geo_request_failure), Toast.LENGTH_SHORT).show();
+      Toast.makeText(getActivity(),
+          getString(R.string.geo_request_failure), Toast.LENGTH_SHORT).show();
       Log.e(TAG, "Response Body : " + result.toString() );
     }
 
     @Override
     protected Result doInBackground(Void... voids) {
       try {
-        Response<Result> response = geoService.get(addressParameter, BuildConfig.API_KEY).execute();
+        Response<Result> response = geoService.getLatLng(addressParameter, BuildConfig.API_KEY).execute();
 //        Log.e(TAG, "Response Code: " + response.code());
 //        Log.e(TAG, "doInBackground: " + response.raw().body().toString());
 

@@ -23,5 +23,8 @@
   <string name="inspection_memorandum_label">Inspection Memorandum</string>
   <string name="violation_code_label">Violation Code</string>
   <string name="geo_request_failure">The request to Google\'s Geocode API has failed</string>
+  <string name="location_exception">Attempt to retrieve your current location has failed.</string>
+  <string name="reverse_request_failure">Location postal code lookup failed.</string>
+  <string name="permission_explanation">Food Fail needs your location to find nearby facilities.</string>
 
 </resources>

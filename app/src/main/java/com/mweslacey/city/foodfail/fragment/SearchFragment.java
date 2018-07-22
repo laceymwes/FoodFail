@@ -33,7 +33,6 @@ public class SearchFragment extends Fragment {
     return new SearchFragment();
   }
 
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
